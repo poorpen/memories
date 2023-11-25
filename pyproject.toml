@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "memories"
+version = "0.1.0"
+description = ""
+authors = ["poorpen <roma.polovik.03@mail.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+validators = "^0.22.0"
+
+
+
+
+[tool.poetry.group.dev.dependencies]
+faker = "^20.1.0"
+pytest = "^7.4.3"
+
+
