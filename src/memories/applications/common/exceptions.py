@@ -1,7 +1,7 @@
-class DomainException(Exception):
+class ApplicationException(Exception):
     @property
     def message(self) -> str:
-        return "base domain error message"
+        return "base application error message"
 
     @property
     def exception_type(self) -> str:

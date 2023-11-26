@@ -11,12 +11,14 @@ class Memory:
         title: text_block.Title,
         text: text_block.Text,
         photo: media.Photo,
+        owner_id: int,
         deleted: Optional[bool] = None,
         create_at: Optional[datetime] = None,
     ):
         self.title = title
         self.text = text
         self.photo = photo
+        self.owner_id = owner_id
         self.deleted = deleted or False
         self.create_at = create_at or datetime.now(timezone.utc)
 

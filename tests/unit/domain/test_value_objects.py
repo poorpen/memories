@@ -5,6 +5,7 @@ import faker
 from typing import Type, Tuple, Any
 
 from memories.domain.memory.value_objects import text_block, media
+from memories.domain.user.value_objects import credentials
 
 
 @pytest.mark.parametrize(
@@ -13,6 +14,7 @@ from memories.domain.memory.value_objects import text_block, media
         (text_block.Title, ("some title",)),
         (text_block.Text, ("some text",)),
         (media.Photo, ("http://www.example.com/photo.jpg",)),
+        (credentials.EmailAddress, ("example@domain.com",)),
     ],
 )
 def test_valid_value_object(value_object_class: Type, value_object_args: Tuple[Any]):
@@ -43,6 +45,14 @@ def test_valid_value_object(value_object_class: Type, value_object_args: Tuple[A
             media.Photo,
             media.InvalidPhotoURL,
             {"photo_url": "http://example.com/path with spaces"},
+        ),
+        (credentials.EmailAddress, credentials.InvalidEmailAddress, ("user@example",)),
+        (credentials.EmailAddress, credentials.InvalidEmailAddress, ("user@.com",)),
+        (credentials.EmailAddress, credentials.InvalidEmailAddress, ("user.com",)),
+        (
+            credentials.EmailAddress,
+            credentials.InvalidEmailAddress,
+            ("user@ex..ample.com",),
         ),
     ],
 )

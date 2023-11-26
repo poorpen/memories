@@ -12,7 +12,7 @@ class ValueObject:
         This method checks that value is valid
         :return: None
         """
-        raise NotImplemented
+        pass
 
     def __post_init__(self) -> None:
         self._validate()
