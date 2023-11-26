@@ -2,7 +2,6 @@ from memories.applications.common.interfaces import IdentityProvider, Permission
 from memories.applications.common.access_control import AccessControl
 from memories.applications.common.exceptions import ApplicationException
 
-from memories.domain.memory import value_objects
 from memories.applications.memory.interfaces import MemoriesUnitOfWork
 from memories.applications.memory.models import command
 

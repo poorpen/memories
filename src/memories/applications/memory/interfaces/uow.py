@@ -1,4 +1,4 @@
-from memories.applications.common.interfaces.uow import UnitOfWork
+from memories.applications.common.interfaces import UnitOfWork
 from memories.applications.memory.interfaces import memories_repo, memories_reader
 
 

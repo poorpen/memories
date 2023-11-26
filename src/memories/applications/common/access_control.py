@@ -1,14 +1,8 @@
 from typing import List
 
-from memories.applications.common.exceptions import ApplicationException
+from memories.applications.common.exceptions import AccessDenied
 from memories.applications.common.constants import PermissionType
 from memories.applications.common.models.dto import Permission
-
-
-class AccessDenied(ApplicationException):
-    @property
-    def message(self) -> str:
-        return "You do not have sufficient rights to perform this action"
 
 
 class AccessControl:
