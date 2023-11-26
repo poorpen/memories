@@ -9,3 +9,4 @@ class Memory:
     title: str
     photo: str
     create_at: datetime
+    update_at: datetime

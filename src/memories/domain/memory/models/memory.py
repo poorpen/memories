@@ -21,6 +21,7 @@ class Memory:
         self.owner_id = owner_id
         self.deleted = deleted or False
         self.create_at = create_at or datetime.now(timezone.utc)
+        self.update_at = self.create_at
 
     def update_text_block(
         self,
@@ -28,15 +29,21 @@ class Memory:
         text: Optional[text_block.Text] = None,
     ) -> None:
         self._check_deleted()
+
         if title:
             self.title = title
         if text:
             self.text = text
 
+        if any([title, text]):
+            self.update_at = datetime.now(timezone.utc)
+
     def update_media(self, photo: Optional[media.Photo] = None) -> None:
         self._check_deleted()
+
         if photo:
             self.photo = photo
+            self.update_at = datetime.now(timezone.utc)
 
     def delete(self) -> None:
         self._check_deleted()

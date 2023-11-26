@@ -14,4 +14,5 @@ def fake_memory() -> models.Memory:
             "".join(fake.random_elements(elements=("a", "b", "c", " "), length=500))
         ),
         photo=media.Photo(fake.url()),
+        owner_id=1
     )
