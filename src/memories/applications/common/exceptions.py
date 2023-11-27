@@ -18,3 +18,9 @@ class AuthError(ApplicationException):
     @property
     def message(self) -> str:
         return "User with this password and email address does not exist"
+
+
+class RepoError(ApplicationException):
+    @property
+    def message(self) -> str:
+        return "Unexpected repository error"

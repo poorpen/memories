@@ -2,7 +2,7 @@ from memories.applications.common.interfaces import IdentityProvider, Permission
 from memories.applications.common.access_control import AccessControl
 from memories.applications.common.exceptions import ApplicationException
 
-from memories.applications.memory.interfaces import MemoriesUnitOfWork
+from memories.applications.memory.interfaces import MemoryUnitOfWork
 from memories.applications.memory.models import command
 
 
@@ -11,7 +11,7 @@ class DeleteMemory:
         self,
         identity_provider: IdentityProvider,
         permission_gateway: PermissionsGateway,
-        uow: MemoriesUnitOfWork,
+        uow: MemoryUnitOfWork,
     ):
         self._identity_provider = identity_provider
         self._permissions_gateway = permission_gateway
@@ -20,16 +20,16 @@ class DeleteMemory:
 
     def __call__(self, command_data: command.DeleteMemory) -> None:
         user_id = self._identity_provider.identify()
-        user_permissions = self._permissions_gateway.get_for_memories(
+        user_permissions = self._permissions_gateway.get_for_memory(
             user_id, command_data.memory_id
         )
         self._access_control.can_delete(user_permissions)
 
-        memory = self._uow.memories_repo.get_memory(command_data.memory_id)
+        memory = self._uow.memory_repo.get_memory(command_data.memory_id)
         memory.delete()
 
         try:
-            self._uow.memories_repo.update_memory(memory)
+            self._uow.memory_repo.update_memory(memory)
             self._uow.commit()
         except ApplicationException as exc:
             self._uow.rollback()

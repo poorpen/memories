@@ -4,7 +4,7 @@ from memories.applications.common.constants import PermissionType
 from memories.applications.common.exceptions import ApplicationException
 
 from memories.domain.memory import value_objects, models
-from memories.applications.memory.interfaces import MemoriesUnitOfWork
+from memories.applications.memory.interfaces import MemoryUnitOfWork
 from memories.applications.memory.models import command
 
 
@@ -13,7 +13,7 @@ class CreateMemoryCommand:
         self,
         identity_provider: IdentityProvider,
         permissions_gateway: PermissionsGateway,
-        uow: MemoriesUnitOfWork,
+        uow: MemoryUnitOfWork,
     ):
         self._identity_provider = identity_provider
         self._permissions_gateway = permissions_gateway
@@ -33,8 +33,8 @@ class CreateMemoryCommand:
         ]
 
         try:
-            memory_id = self._uow.memories_repo.create_memory(memory)
-            self._permissions_gateway.add_for_memories(user_id, memory_id, permissions)
+            memory_id = self._uow.memory_repo.create_memory(memory)
+            self._permissions_gateway.add_for_memory(user_id, memory_id, permissions)
             self._uow.commit()
         except ApplicationException as exc:
             self._uow.rollback()

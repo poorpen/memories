@@ -1,7 +1,7 @@
 from memories.applications.common.interfaces import UnitOfWork
-from memories.applications.memory.interfaces import memories_repo, memories_reader
+from memories.applications.memory.interfaces import MemoryRepo, MemoryReader
 
 
-class MemoriesUnitOfWork(UnitOfWork):
-    memories_repo: memories_repo.MemoriesRepo
-    memories_reader: memories_reader.MemoriesReader
+class MemoryUnitOfWork(UnitOfWork):
+    memory_repo: MemoryRepo
+    memory_reader: MemoryReader
