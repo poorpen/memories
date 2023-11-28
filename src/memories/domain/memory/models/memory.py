@@ -12,9 +12,11 @@ class Memory:
         text: text_block.Text,
         photo: media.Photo,
         owner_id: int,
+        id: Optional[int] = None,
         deleted: Optional[bool] = None,
         create_at: Optional[datetime] = None,
     ):
+        self.id = id
         self.title = title
         self.text = text
         self.photo = photo
