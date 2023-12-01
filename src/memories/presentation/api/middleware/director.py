@@ -1,11 +1,14 @@
-from flask import g
+from flask import g, Flask
 
 from memories.applications.memory import models, commands, queries
 from memories.adapters.director import Director
 
 
 class DirectorMiddleware:
-    def __call__(self):
+    def __init__(self, app: Flask):
+        app.before_request(self.open)
+
+    def open(self):
         director = Director()
 
         identity_provider = g.identity_provider

@@ -1,3 +1,1 @@
-from . import memory, user
-
-__all__ = ["memory", "user"]
+from .bind import bind_routers

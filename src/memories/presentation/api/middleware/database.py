@@ -1,4 +1,4 @@
-from flask import g
+from flask import g, Flask
 
 from sqlalchemy.orm import sessionmaker
 
@@ -7,12 +7,17 @@ from memories.adapters.database.repositories.permission import PermissionsGatewa
 
 
 class DatabaseMiddleware:
-    def __init__(self, session_maker: sessionmaker):
+    def __init__(self, app: Flask, session_maker: sessionmaker):
         self.session_maker = session_maker
 
-    def __call__(self) -> None:
-        with self.session_maker() as session:
-            g.session = session
-            g.uow = UnitOfWorkImpl(session)
-            g.permissions_gateway = PermissionsGatewayImpl(session)
-            yield
+        app.before_request(self.open)
+        app.teardown_appcontext(self.close)
+
+    def open(self) -> None:
+        session = self.session_maker()
+        g.session = session
+        g.uow = UnitOfWorkImpl(session)
+        g.permissions_gateway = PermissionsGatewayImpl(session)
+
+    def close(self, *args, **kwargs):
+        g.session.close()

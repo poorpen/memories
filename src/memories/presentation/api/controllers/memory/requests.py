@@ -8,12 +8,10 @@ class AddMemory(BaseModel):
 
 
 class UpdateMedia(BaseModel):
-    memory_id: int
     photo_url: str
 
 
 class UpdateText(BaseModel):
-    memory_id: int
     title: str
     text: str
 

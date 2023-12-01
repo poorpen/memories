@@ -5,11 +5,11 @@ from flask import request
 
 def body_to_model(model: Type[BaseModel]):
     def func_wrapper(func: Callable):
-        def serializer(*args, **kwargs):
+        def serializesr(*args, **kwargs):
             view_model = model.model_validate(request.json)
-            return func(view_model, *args, **kwargs)
+            return func(*args, view_model, **kwargs)
 
-        return serializer
+        return serializesr
 
     return func_wrapper
 
@@ -18,7 +18,7 @@ def query_to_model(model: Type[BaseModel]):
     def func_wrapper(func: Callable):
         def serializer(*args, **kwargs):
             param = model.model_validate(request.args.to_dict())
-            return func(param, *args, **kwargs)
+            return func(*args, param, **kwargs)
 
         return serializer
 

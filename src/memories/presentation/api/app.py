@@ -1,9 +1,17 @@
 from flask import Flask
-from memories.presentation.api.controllers import memory, user
+
+from memories.adapters.database.connection import get_database_connection
+from memories.presentation.api.middleware import bind_middleware
+from memories.presentation.api.controllers import bind_routers
+from memories.presentation.api.config import ApplicationConfig
 
 
-if __name__ == "__main__":
-    app = Flask(__name__)
-    app.register_blueprint(memory.memories_router)
-    print(app.url_map)
-    app.run()
+def build_app(config: ApplicationConfig) -> Flask:
+    app = Flask("memories")
+
+    database_connection = get_database_connection(config.database)
+
+    bind_middleware(app, database_connection)
+    bind_routers(app)
+
+    return app
