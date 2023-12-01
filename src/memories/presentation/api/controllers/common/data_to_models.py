@@ -5,11 +5,11 @@ from flask import request
 
 def body_to_model(model: Type[BaseModel]):
     def func_wrapper(func: Callable):
-        def serializesr(*args, **kwargs):
+        def serializer(*args, **kwargs):
             view_model = model.model_validate(request.json)
             return func(*args, view_model, **kwargs)
 
-        return serializesr
+        return serializer
 
     return func_wrapper
 

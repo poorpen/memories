@@ -8,7 +8,7 @@ class AddMemory(BaseModel):
 
 
 class UpdateMedia(BaseModel):
-    photo_url: str
+    photo: str
 
 
 class UpdateText(BaseModel):

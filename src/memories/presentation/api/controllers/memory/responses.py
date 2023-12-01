@@ -8,9 +8,9 @@ class Memory(BaseModel):
     title: str
     text: str
     photo: str
-    owner_id: int = Field(alias="ownerID")
-    create_at: datetime = Field(alias="createAt")
-    update_at: datetime = Field(alias="updateAt")
+    owner_id: int
+    create_at: datetime
+    update_at: datetime
 
 
 class MemoryId(BaseModel):

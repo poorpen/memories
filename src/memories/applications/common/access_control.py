@@ -9,7 +9,7 @@ class AccessControl:
     def can_update(self, user_permissions: List[Permission]) -> None:
         for permission in user_permissions:
             if (
-                permission.permission_type == PermissionType.UPDATE
+                permission.type == PermissionType.UPDATE
                 and permission.allowed
             ):
                 return
@@ -18,7 +18,7 @@ class AccessControl:
     def can_delete(self, user_permissions: List[Permission]) -> None:
         for permission in user_permissions:
             if (
-                permission.permission_type == PermissionType.DELETE
+                permission.type == PermissionType.DELETE
                 and permission.allowed
             ):
                 return

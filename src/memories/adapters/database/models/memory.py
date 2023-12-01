@@ -8,7 +8,10 @@ from sqlalchemy import (
     Boolean,
     Enum,
 )
+from sqlalchemy.orm import composite
+
 from memories.domain.memory import models
+from memories.domain.memory.value_objects import text_block, media
 from memories.applications.common.models import dto
 from memories.applications.common.constants import PermissionType
 from memories.adapters.database.models.base import metadata_obj, mapper_registry
@@ -30,13 +33,28 @@ memory = Table(
 permissions_for_memory = Table(
     "permissions_for_memory",
     metadata_obj,
-    Column("user_id", Integer, ForeignKey("users.id"), primary_key=True),
-    Column("memory_id", Integer, ForeignKey("memories.id"), primary_key=True),
-    Column("permission_type", Enum(PermissionType), nullable=False),
+    Column("id", Integer, primary_key=True),
+    Column("user_id", Integer, ForeignKey("users.id")),
+    Column("memory_id", Integer, ForeignKey("memories.id")),
+    Column("type", Enum(PermissionType), nullable=False),
     Column("allowed", Boolean, nullable=False),
 )
 
 
 def map_memory() -> None:
-    mapper_registry.map_imperatively(models.Memory, memory)
+    mapper_registry.map_imperatively(
+        models.Memory,
+        memory,
+        properties={
+            "id": memory.c.id,
+            "title": composite(text_block.Title, memory.c.title),
+            "text": composite(text_block.Text, memory.c.text),
+            "photo": composite(media.Photo, memory.c.photo),
+            "deleted": memory.c.deleted,
+            "create_at": memory.c.create_at,
+            "update_at": memory.c.update_at,
+            "owner_id": memory.c.owner_id,
+        },
+        column_prefix="_",
+    )
     mapper_registry.map_imperatively(dto.Permission, permissions_for_memory)

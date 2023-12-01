@@ -2,7 +2,7 @@ from sqlalchemy.exc import IntegrityError
 
 from memories.domain.user.models import User
 from memories.applications.user.exceptions import UserAlreadyExist
-from memories.applications.user.interfaces import UserRepo
+from memories.applications.user.interfaces.user_repo import UserRepo
 from memories.adapters.database import exception_mapper, models
 from memories.adapters.database.repositories.base import SQLAlchemyRepo
 

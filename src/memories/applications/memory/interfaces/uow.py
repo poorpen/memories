@@ -1,5 +1,5 @@
 from memories.applications.common.interfaces import UnitOfWork
-from memories.applications.memory.interfaces import MemoryRepo, MemoryReader
+from memories.applications.memory.interfaces.memory_repositories import MemoryRepo, MemoryReader
 
 
 class MemoryUnitOfWork(UnitOfWork):

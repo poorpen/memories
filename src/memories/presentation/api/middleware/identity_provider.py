@@ -10,6 +10,7 @@ class IdentityProviderMiddleware:
 
     def open(self):
         auth_string = request.headers.get("Authorization", default="")
+        g.hasher = CryptContext(schemes=["bcrypt"])
         g.identity_provider = identity_provider.BasicIdentityProvider(
-            auth_string, g.session, CryptContext(schemes=["bcrypt"])
+            auth_string, g.session, g.hasher
         )

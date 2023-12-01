@@ -1,8 +1,8 @@
-from flask import Blueprint, Response, g
+import json
 
-from memories.presentation.api.controllers.common import exception_handlers
+from flask import Response, g
 
-from memories.applications.memory import exceptions
+
 from memories.applications.memory.models import command, query
 from memories.presentation.api.controllers.common import data_to_models
 from memories.presentation.api.controllers.memory import requests, responses
@@ -24,7 +24,9 @@ def get_my_memories(query_param: requests.GetMemories):
     memories = g.director.execute(
         query.GetMyMemories(query_param.limit, query_param.offset)
     )
-    return [responses.Memory.model_validate(memory) for memory in memories]
+    return Response(
+        [responses.Memory(**memory.__dict__).model_dump_json() for memory in memories]
+    )
 
 
 @memories_router.route("/feed", methods=["GET"], endpoint="feed_memories")
@@ -33,14 +35,17 @@ def get_feed_memories(query_param: requests.GetMemories):
     memories = g.director.execute(
         query.GetOtherMemories(query_param.limit, query_param.offset)
     )
-    return [responses.Memory.model_validate(memory) for memory in memories]
+    print(memories)
+    return Response(
+        [responses.Memory(**memory.__dict__).model_dump_json() for memory in memories]
+    )
 
 
 @memories_router.route(
     "/<int:memory_id>/text/", methods=["PATCH"], endpoint="update_text"
 )
 @data_to_models.body_to_model(requests.UpdateText)
-def update_text_in_memory(memory_id: int, text_block: requests.UpdateText):
+def update_text_in_memory(text_block: requests.UpdateText, memory_id: int):
     g.director.execute(command.UpdateText(memory_id, text_block.title, text_block.text))
     return Response(status=204)
 
@@ -49,8 +54,8 @@ def update_text_in_memory(memory_id: int, text_block: requests.UpdateText):
     "/<int:memory_id>/media/", methods=["PATCH"], endpoint="update_media"
 )
 @data_to_models.body_to_model(requests.UpdateMedia)
-def update_media_in_memory(memory_id: int, media: requests.UpdateMedia):
-    g.director.execute(command.UpdateMedia(memory_id, media.photo_url))
+def update_media_in_memory(media: requests.UpdateMedia, memory_id: int):
+    g.director.execute(command.UpdateMedia(memory_id, media.photo))
     return Response(status=204)
 
 

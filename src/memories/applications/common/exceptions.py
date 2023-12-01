@@ -1,11 +1,10 @@
-class ApplicationException(Exception):
+from memories.domain.common.exceptions import AppException
+
+
+class ApplicationException(AppException):
     @property
     def message(self) -> str:
         return "base application error message"
-
-    @property
-    def exception_type(self) -> str:
-        return self.__class__.__name__
 
 
 class AccessDenied(ApplicationException):
@@ -20,7 +19,13 @@ class AuthError(ApplicationException):
         return "User with this password and email address does not exist"
 
 
-class RepoError(ApplicationException):
+class UnexpectedAppError(ApplicationException):
+    @property
+    def message(self) -> str:
+        return "Unexpected error"
+
+
+class RepoError(UnexpectedAppError):
     @property
     def message(self) -> str:
         return "Unexpected repository error"

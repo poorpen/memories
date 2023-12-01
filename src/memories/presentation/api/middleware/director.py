@@ -1,6 +1,7 @@
 from flask import g, Flask
 
-from memories.applications.memory import models, commands, queries
+from memories.domain.user.services import PasswordHasher
+from memories.applications import user, memory
 from memories.adapters.director import Director
 
 
@@ -16,27 +17,37 @@ class DirectorMiddleware:
         uow = g.uow
 
         director.register_handler(
-            models.command.CreateMemory,
-            commands.CreateMemoryCommand(identity_provider, permissions_gateway, uow),
+            memory.models.command.CreateMemory,
+            memory.commands.CreateMemoryCommand(
+                identity_provider, permissions_gateway, uow
+            ),
         )
         director.register_handler(
-            models.command.UpdateText,
-            commands.UpdateMemoryText(identity_provider, permissions_gateway, uow),
+            memory.models.command.UpdateText,
+            memory.commands.UpdateMemoryText(
+                identity_provider, permissions_gateway, uow
+            ),
         )
         director.register_handler(
-            models.command.UpdateMedia,
-            commands.UpdateMemoryMedia(identity_provider, permissions_gateway, uow),
+            memory.models.command.UpdateMedia,
+            memory.commands.UpdateMemoryMedia(
+                identity_provider, permissions_gateway, uow
+            ),
         )
         director.register_handler(
-            models.command.DeleteMemory,
-            commands.DeleteMemory(identity_provider, permissions_gateway, uow),
+            memory.models.command.DeleteMemory,
+            memory.commands.DeleteMemory(identity_provider, permissions_gateway, uow),
         )
         director.register_handler(
-            models.query.GetMyMemories, queries.GetMyMemories(identity_provider, uow)
+            memory.models.query.GetMyMemories,
+            memory.queries.GetMyMemories(identity_provider, uow),
         )
         director.register_handler(
-            models.query.GetOtherMemories,
-            queries.GetOtherMemories(identity_provider, uow),
+            memory.models.query.GetOtherMemories,
+            memory.queries.GetOtherMemories(identity_provider, uow),
+        )
+        director.register_handler(
+            user.models.command.RegisterUser, user.commands.RegisterUser(uow, PasswordHasher(g.hasher))
         )
 
         g.director = director

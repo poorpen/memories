@@ -41,9 +41,8 @@ class MemoryReaderImpl(SQLAlchemyRepo, MemoryReader):
             .offset(offset)
             .limit(limit)
             .where(models.memory.c.owner_id == user_id)
-            .where(models.memory.c.deleted is False)
+            .where(models.memory.c.deleted.is_(False))
         )
-
         res = self._session.execute(stmt)
         mapped_res = res.mappings().all()
         return converters.memory.to_dtos(mapped_res)
@@ -56,7 +55,7 @@ class MemoryReaderImpl(SQLAlchemyRepo, MemoryReader):
             .offset(offset)
             .limit(limit)
             .where(models.memory.c.owner_id != user_id)
-            .where(models.memory.c.deleted is False)
+            .where(models.memory.c.deleted.is_(False))
         )
 
         res = self._session.execute(stmt)

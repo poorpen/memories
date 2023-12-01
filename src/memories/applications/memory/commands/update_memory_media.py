@@ -26,7 +26,7 @@ class UpdateMemoryMedia:
         )
         self._access_control.can_update(user_permissions)
 
-        new_photo = value_objects.media.Photo(command_data.photo_url)
+        new_photo = value_objects.media.Photo(command_data.photo)
 
         memory = self._uow.memory_repo.get_memory(command_data.memory_id)
         memory.update_media(new_photo)

@@ -9,7 +9,7 @@ from memories.adapters.database.repositories import user, memory
 from memories.adapters.database import exceptions
 
 
-class UnitOfWorkImpl(UnitOfWork, MemoryUnitOfWork, UserUnitOfWork):
+class UnitOfWorkImpl(UnitOfWork):
     def __init__(self, session: Session):
         self._session = session
         self.memory_repo = memory.MemoryRepoImpl(self._session)
@@ -18,12 +18,12 @@ class UnitOfWorkImpl(UnitOfWork, MemoryUnitOfWork, UserUnitOfWork):
 
     def commit(self) -> None:
         try:
-            self.commit()
+            self._session.commit()
         except SQLAlchemyError as exc:
             raise exceptions.CommitError from exc
 
     def rollback(self) -> None:
         try:
-            self.rollback()
+            self._session.rollback()
         except SQLAlchemyError as exc:
             raise exceptions.RollbackError from exc

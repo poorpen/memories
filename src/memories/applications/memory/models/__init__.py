@@ -1,4 +1,4 @@
-from . import dto, command
+from . import dto, command, query
 
 
-__all__ = ["dto", "command"]
+__all__ = ["dto", "command", "query"]

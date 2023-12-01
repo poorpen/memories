@@ -11,7 +11,7 @@ class CreateMemory:
 @dataclass
 class UpdateMedia:
     memory_id: int
-    photo_url: str
+    photo: str
 
 
 @dataclass
