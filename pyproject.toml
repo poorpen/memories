@@ -3,8 +3,6 @@ name = "memories"
 version = "0.1.0"
 description = ""
 authors = ["poorpen <roma.polovik.03@mail.ru>"]
-readme = "README.md"
-
 [tool.poetry.dependencies]
 python = "^3.11"
 validators = "^0.22.0"
@@ -12,6 +10,11 @@ passlib = "^1.7.4"
 email-validator = "^2.1.0.post1"
 sqlalchemy = "^2.0.23"
 flask = "^3.0.0"
+swagger-ui-py = "^23.9.23"
+alembic = "^1.13.0"
+psycopg2 = "^2.9.9"
+psycopg2-binary = "^2.9.9"
+pydantic = "^2.5.2"
 
 
 

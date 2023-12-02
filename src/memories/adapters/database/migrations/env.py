@@ -1,3 +1,5 @@
+import os
+
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
@@ -27,6 +29,15 @@ target_metadata = metadata_obj
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
+
+config = context.config
+section = config.config_ini_section
+config.set_section_option(section, "DB_DRIVE", os.getenv("DB_DRIVE"))
+config.set_section_option(section, "DB_USER", os.getenv("DB_USER"))
+config.set_section_option(section, "DB_PASSWORD", os.getenv("DB_PASSWORD"))
+config.set_section_option(section, "DB_HOST", os.getenv("DB_HOST"))
+config.set_section_option(section, "DB_PORT", os.getenv("DB_PORT"))
+config.set_section_option(section, "DB_NAME", os.getenv("DB_NAME"))
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.

@@ -1,0 +1,43 @@
+version: "3.8"
+
+
+
+services:
+
+  database:
+    container_name: postgres-database
+    image: "postgres:15"
+    environment:
+      - POSTGRES_USER=db_user
+      - POSTGRES_PASSWORD=db_password
+      - POSTGRES_DB=db_name
+    volumes:
+      - /var/lib/postgresql-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    ports:
+      - "5435:5432"
+    networks:
+      - memories.postgres.network
+
+  api:
+    container_name: memories-api
+    build:
+      context: ./
+    environment:
+      - DB_NAME=db_name
+      - DB_USER=db_user
+      - DB_PASSWORD=db_password
+      - DB_HOST=database
+      - DB_PORT=5432
+      - DB_DRIVE=postgresql+psycopg2
+    restart: unless-stopped
+    networks:
+      - memories.postgres.network
+    depends_on:
+      - database
+    command: make start
+
+
+networks:
+  memories.postgres.network:
+    driver: bridge
