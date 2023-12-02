@@ -6,6 +6,10 @@ tags:
   - name: Memories
   - name: User
 components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
   schemas:
     error:
       type: object
@@ -36,6 +40,9 @@ components:
         updateAt:
           description: datetime in ISO 8601
           type: string
+
+security:
+  - basicAuth: [ ]
 
 paths:
   /memories:
@@ -93,6 +100,7 @@ paths:
       parameters:
         - name: memoryId
           in: path
+          required: true
           schema:
             type: string
       responses:
@@ -124,6 +132,7 @@ paths:
       parameters:
         - name: memoryId
           in: path
+          required: true
           schema:
             type: string
       requestBody:
@@ -168,6 +177,7 @@ paths:
       parameters:
         - name: memoryId
           in: path
+          required: true
           schema:
             type: string
       requestBody:
@@ -268,7 +278,7 @@ paths:
               properties:
                 email_address:
                   type: string
-                  example: emample@email.com
+                  example: example@email.com
                 password:
                   type: string
                   example: somepassword

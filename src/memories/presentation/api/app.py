@@ -1,4 +1,5 @@
 from flask import Flask
+from swagger_ui import api_doc
 
 from memories.adapters.database.connection import get_database_connection
 from memories.presentation.api.middleware import bind_middleware
@@ -14,4 +15,5 @@ def build_app(config: ApplicationConfig) -> Flask:
     bind_middleware(app, database_connection)
     bind_routers(app)
 
+    api_doc(app, config_path='memories.yml', url_prefix="/docs", title="Memories docs")
     return app
