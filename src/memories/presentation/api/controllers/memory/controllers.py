@@ -25,7 +25,7 @@ def get_my_memories(query_param: requests.GetMemories):
         query.GetMyMemories(query_param.limit, query_param.offset)
     )
     return Response(
-        [responses.Memory(**memory.__dict__).model_dump_json() for memory in memories]
+        [responses.Memory(**memory.__dict__).model_dump_json(by_alias=True) for memory in memories]
     )
 
 
@@ -35,14 +35,13 @@ def get_feed_memories(query_param: requests.GetMemories):
     memories = g.director.execute(
         query.GetOtherMemories(query_param.limit, query_param.offset)
     )
-    print(memories)
     return Response(
-        [responses.Memory(**memory.__dict__).model_dump_json() for memory in memories]
+        [responses.Memory(**memory.__dict__).model_dump_json(by_alias=True) for memory in memories]
     )
 
 
 @memories_router.route(
-    "/<int:memory_id>/text/", methods=["PATCH"], endpoint="update_text"
+    "/<int:memory_id>/text", methods=["PATCH"], endpoint="update_text"
 )
 @data_to_models.body_to_model(requests.UpdateText)
 def update_text_in_memory(text_block: requests.UpdateText, memory_id: int):
@@ -51,7 +50,7 @@ def update_text_in_memory(text_block: requests.UpdateText, memory_id: int):
 
 
 @memories_router.route(
-    "/<int:memory_id>/media/", methods=["PATCH"], endpoint="update_media"
+    "/<int:memory_id>/media", methods=["PATCH"], endpoint="update_media"
 )
 @data_to_models.body_to_model(requests.UpdateMedia)
 def update_media_in_memory(media: requests.UpdateMedia, memory_id: int):
@@ -59,7 +58,7 @@ def update_media_in_memory(media: requests.UpdateMedia, memory_id: int):
     return Response(status=204)
 
 
-@memories_router.route("/<int:memory_id>/", methods=["DELETE"], endpoint="delete_media")
+@memories_router.route("/<int:memory_id>", methods=["DELETE"], endpoint="delete_media")
 def delete_memory(memory_id: int):
     g.director.execute(command.DeleteMemory(memory_id))
     return Response(status=204)

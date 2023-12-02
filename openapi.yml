@@ -1,0 +1,187 @@
+openapi: "3.0.0"
+info:
+  version: "1.0"
+  title: Memories API
+tags:
+  - name: Memories
+  - name: User
+components:
+  schemas:
+    error:
+      type: object
+      properties:
+        message:
+          description: Error message
+          type: string
+        type:
+          description: Error type
+          type: string
+    memory:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        text:
+          type: string
+        photo:
+          description: photo url
+          type: string
+        ownerId:
+          type: integer
+        createAt:
+          description: datetime in ISO 8601
+          type: string
+        updateAt:
+          description: datetime in ISO 8601
+          type: string
+
+paths:
+  /memories:
+    post:
+      tags:
+        - Memories
+      summary: Add memory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "some title"
+                text:
+                  type: string
+                  example: "some long text"
+                photo:
+                  description: photo url
+                  type: string
+                  example: "https://www.example.com/photo.jpg"
+              required:
+                - title
+                - text
+                - photo
+      responses:
+        "200":
+          description: "Added memory id"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+        "400":
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        "401":
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  /memories/{memoryId}:
+    delete:
+      description: Delete memory
+      tags:
+        - Memories
+      parameters:
+        - name: memoryId
+          in: path
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Memory deleted
+        "401":
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  /memories/{memoryId}/text:
+  /memories/{memoryId}/media:
+  /memories/my:
+    get:
+      tags:
+        - Memories
+      summary: Get your memories feed
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+
+      responses:
+        "200":
+          description: Your memories
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Array of memories
+                items:
+                  $ref: "#/components/schemas/memory"
+  /memories/feed:
+    get:
+      tags:
+        - Memories
+      summary: Get memories feed
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        "200":
+          description: Other people memories
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Array of memories
+                items:
+                  $ref: "#/components/schemas/memory"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

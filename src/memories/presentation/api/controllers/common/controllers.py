@@ -1,4 +1,5 @@
 from flask import Flask
+from werkzeug.exceptions import HTTPException
 from pydantic import ValidationError
 
 from memories import domain, applications
@@ -10,7 +11,7 @@ def setup_common_exception(app: Flask):
         domain.exceptions.DomainException, exception_handlers.exception_handler(400)
     )
     app.register_error_handler(
-        applications.exceptions.AuthError, exception_handlers.exception_handler(403)
+        applications.exceptions.AuthError, exception_handlers.exception_handler(401)
     )
     app.register_error_handler(
         applications.exceptions.AccessDenied, exception_handlers.exception_handler(403)
@@ -18,8 +19,9 @@ def setup_common_exception(app: Flask):
     app.register_error_handler(
         ValidationError, exception_handlers.validation_exception_handler
     )
-    # app.register_error_handler(
-    #     applications.exceptions.UnexpectedAppError,
-    #     exception_handlers.exception_handler(500),
-    # )
-    # app.register_error_handler(Exception, exception_handlers.unknown_exception_handler)
+    app.register_error_handler(HTTPException, exception_handlers.http_exception_handler)
+    app.register_error_handler(
+        applications.exceptions.UnexpectedAppError,
+        exception_handlers.exception_handler(500),
+    )
+    app.register_error_handler(Exception, exception_handlers.unknown_exception_handler)

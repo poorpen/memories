@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class Memory(BaseModel):
@@ -8,9 +8,13 @@ class Memory(BaseModel):
     title: str
     text: str
     photo: str
-    owner_id: int
-    create_at: datetime
-    update_at: datetime
+    owner_id: int = Field(alias="ownerID")
+    create_at: datetime = Field(alias="createAt")
+    update_at: datetime = Field(alias="updateAt")
+
+    class Config:
+        json_encoders = {datetime: lambda v: v.isoformat()}
+        populate_by_name = True
 
 
 class MemoryId(BaseModel):

@@ -1,4 +1,5 @@
 import json
+from werkzeug.exceptions import HTTPException
 from functools import partial
 from pydantic import ValidationError
 
@@ -21,6 +22,13 @@ def unknown_exception_handler(exc: Exception):
             message="Unknown error has occurred", type="UnexpectedError"
         ).model_dump_json(),
         500,
+    )
+
+
+def http_exception_handler(exc: HTTPException):
+    return (
+        responses.ExceptionModel(message=exc.description, type=exc.__class__.__name__).model_dump_json(),
+        exc.code,
     )
 
 

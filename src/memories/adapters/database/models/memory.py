@@ -6,14 +6,11 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
     Boolean,
-    Enum,
 )
 from sqlalchemy.orm import composite
 
 from memories.domain.memory import models
 from memories.domain.memory.value_objects import text_block, media
-from memories.applications.common.models import dto
-from memories.applications.common.constants import PermissionType
 from memories.adapters.database.models.base import metadata_obj, mapper_registry
 
 
@@ -28,16 +25,6 @@ memory = Table(
     Column("deleted", Boolean, nullable=False),
     Column("create_at", DateTime, nullable=False),
     Column("update_at", DateTime, nullable=False),
-)
-
-permissions_for_memory = Table(
-    "permissions_for_memory",
-    metadata_obj,
-    Column("id", Integer, primary_key=True),
-    Column("user_id", Integer, ForeignKey("users.id")),
-    Column("memory_id", Integer, ForeignKey("memories.id")),
-    Column("type", Enum(PermissionType), nullable=False),
-    Column("allowed", Boolean, nullable=False),
 )
 
 
@@ -57,4 +44,3 @@ def map_memory() -> None:
         },
         column_prefix="_",
     )
-    mapper_registry.map_imperatively(dto.Permission, permissions_for_memory)

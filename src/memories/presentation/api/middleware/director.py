@@ -13,30 +13,29 @@ class DirectorMiddleware:
         director = Director()
 
         identity_provider = g.identity_provider
-        permissions_gateway = g.permissions_gateway
         uow = g.uow
 
         director.register_handler(
             memory.models.command.CreateMemory,
             memory.commands.CreateMemoryCommand(
-                identity_provider, permissions_gateway, uow
+                identity_provider, uow
             ),
         )
         director.register_handler(
             memory.models.command.UpdateText,
             memory.commands.UpdateMemoryText(
-                identity_provider, permissions_gateway, uow
+                identity_provider, uow
             ),
         )
         director.register_handler(
             memory.models.command.UpdateMedia,
             memory.commands.UpdateMemoryMedia(
-                identity_provider, permissions_gateway, uow
+                identity_provider, uow
             ),
         )
         director.register_handler(
             memory.models.command.DeleteMemory,
-            memory.commands.DeleteMemory(identity_provider, permissions_gateway, uow),
+            memory.commands.DeleteMemory(identity_provider, uow),
         )
         director.register_handler(
             memory.models.query.GetMyMemories,

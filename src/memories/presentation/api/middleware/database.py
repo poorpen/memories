@@ -3,7 +3,6 @@ from flask import g, Flask
 from sqlalchemy.orm import sessionmaker
 
 from memories.adapters.database.uow import UnitOfWorkImpl
-from memories.adapters.database.repositories.permission import PermissionsGatewayImpl
 
 
 class DatabaseMiddleware:
@@ -17,7 +16,6 @@ class DatabaseMiddleware:
         session = self.session_maker()
         g.session = session
         g.uow = UnitOfWorkImpl(session)
-        g.permissions_gateway = PermissionsGatewayImpl(session)
 
     def close(self, *args, **kwargs):
         g.session.close()
