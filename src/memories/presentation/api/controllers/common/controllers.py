@@ -20,8 +20,8 @@ def setup_common_exception(app: Flask):
         ValidationError, exception_handlers.validation_exception_handler
     )
     app.register_error_handler(HTTPException, exception_handlers.http_exception_handler)
-    app.register_error_handler(
-        applications.exceptions.UnexpectedAppError,
-        exception_handlers.exception_handler(500),
-    )
-    app.register_error_handler(Exception, exception_handlers.unknown_exception_handler)
+    # app.register_error_handler(
+    #     applications.exceptions.UnexpectedAppError,
+    #     exception_handlers.exception_handler(500),
+    # )
+    # app.register_error_handler(Exception, exception_handlers.unknown_exception_handler)

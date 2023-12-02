@@ -1,4 +1,5 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
+from pydantic_core import PydanticCustomError
 
 
 class AddMemory(BaseModel):
@@ -12,8 +13,18 @@ class UpdateMedia(BaseModel):
 
 
 class UpdateText(BaseModel):
-    title: str
-    text: str
+    title: str = None
+    text: str = None
+
+    @model_validator(mode="after")
+    def check_all_empty(self) -> "UpdateText":
+        if not self.title and not self.text:
+            raise PydanticCustomError(
+                "values_is_empty",
+                "all fields is empty",
+                dict(wrong_value=None),
+            )
+        return self
 
 
 class GetMemories(BaseModel):

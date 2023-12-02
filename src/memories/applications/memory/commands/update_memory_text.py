@@ -23,8 +23,16 @@ class UpdateMemoryText:
 
         self._access_control.can_update(user_id, memory.owner_id)
 
-        new_title = value_objects.text_block.Title(command_data.title)
-        new_text = value_objects.text_block.Text(command_data.text)
+        new_title = (
+            value_objects.text_block.Title(command_data.title)
+            if command_data.title
+            else None
+        )
+        new_text = (
+            value_objects.text_block.Text(command_data.text)
+            if command_data.text
+            else None
+        )
 
         memory.update_text_block(new_title, new_text)
 

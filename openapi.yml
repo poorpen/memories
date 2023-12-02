@@ -74,7 +74,7 @@ paths:
                   id:
                     type: integer
         "400":
-          description: "Bad request"
+          description: Incorrect type or format
           content:
             application/json:
               schema:
@@ -98,8 +98,14 @@ paths:
       responses:
         "204":
           description: Memory deleted
+        "400":
+          description: Incorrect type or format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
         "401":
-          description: "Unauthorized"
+          description: Unauthorized
           content:
             application/json:
               schema:
@@ -110,9 +116,91 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/error"
-
   /memories/{memoryId}/text:
+    patch:
+      summary: Update text block
+      tags:
+        - Memories
+      parameters:
+        - name: memoryId
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "some title"
+                text:
+                  type: string
+                  example: "some long text"
+
+      responses:
+        "204":
+          description: Text block updated
+        "400":
+          description: Incorrect type or format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
   /memories/{memoryId}/media:
+    patch:
+      summary: Update media block
+      tags:
+        - Memories
+      parameters:
+        - name: memoryId
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                photo:
+                  type: string
+                  example: "https://www.example.com/photo.jpg"
+
+      responses:
+        "204":
+          description: Media block updated
+        "400":
+          description: Incorrect type or format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
   /memories/my:
     get:
       tags:
@@ -166,6 +254,35 @@ paths:
                 description: Array of memories
                 items:
                   $ref: "#/components/schemas/memory"
+
+  /registration:
+    post:
+      description: Registration
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email_address:
+                  type: string
+                  example: emample@email.com
+                password:
+                  type: string
+                  example: somepassword
+      responses:
+        "201":
+          description: User Created
+        "400":
+          description: Incorrect type or format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+
 
 
 

@@ -27,16 +27,19 @@ def unknown_exception_handler(exc: Exception):
 
 def http_exception_handler(exc: HTTPException):
     return (
-        responses.ExceptionModel(message=exc.description, type=exc.__class__.__name__).model_dump_json(),
+        responses.ExceptionModel(
+            message=exc.description, type=exc.__class__.__name__
+        ).model_dump_json(),
         exc.code,
     )
 
 
 def validation_exception_handler(exc: ValidationError):
     exc_data = json.loads(exc.json())[0]
+    field = f'{exc_data["loc"][0]}: ' if exc_data["loc"] else ""
     return (
         responses.ExceptionModel(
-            message=f'{exc_data["loc"][0]}: {exc_data["msg"]}', type="ValidationError"
+            message=f'{field}{exc_data["msg"]}', type="ValidationError"
         ).model_dump_json(),
         400,
     )
